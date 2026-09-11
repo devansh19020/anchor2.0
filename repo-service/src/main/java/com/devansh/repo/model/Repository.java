@@ -1,4 +1,4 @@
-package com.devansh.repo.entity;
+package com.devansh.repo.model;
 
 import jakarta.persistence.*;
 
@@ -15,6 +15,9 @@ public class Repository {
 
     @Column(nullable = false)
     private UUID userId;
+
+    @Column(nullable = false)
+    private UUID workspaceId;
 
     @Column(nullable = false)
     private String repositoryUrl;
@@ -35,6 +38,9 @@ public class Repository {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+    
+    @Column(nullable = false)
+    private String indexingStatus;
 
     @PrePersist
     protected void onCreate() {
@@ -114,5 +120,21 @@ public class Repository {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getIndexingStatus() {
+        return indexingStatus;
+    }
+
+    public void setIndexingStatus(String indexingStatus) {
+        this.indexingStatus = indexingStatus;
+    }
+
+    public UUID getWorkspaceId() {
+        return workspaceId;
+    }
+
+    public void setWorkspaceId(UUID workspaceId) {
+        this.workspaceId = workspaceId;
     }
 }

@@ -1,6 +1,7 @@
-package com.devansh.repo.kafka;
+package com.devansh.repo.producer;
 
 import com.devansh.repo.event.RepositoryImportedEvent;
+
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -10,16 +11,24 @@ public class RepositoryEventProducer {
     public static final String REPOSITORY_IMPORTED =
             "repository.imported";
 
-    private final KafkaTemplate<String, RepositoryImportedEvent> kafkaTemplate;
+    private final KafkaTemplate<
+            String,
+            RepositoryImportedEvent
+            > kafkaTemplate;
 
     public RepositoryEventProducer(
-            KafkaTemplate<String, RepositoryImportedEvent> kafkaTemplate) {
+            KafkaTemplate<
+                    String,
+                    RepositoryImportedEvent
+                    > kafkaTemplate
+    ) {
 
         this.kafkaTemplate = kafkaTemplate;
     }
 
     public void publishRepositoryImported(
-            RepositoryImportedEvent event) {
+            RepositoryImportedEvent event
+    ) {
 
         kafkaTemplate.send(
                 REPOSITORY_IMPORTED,

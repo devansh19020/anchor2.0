@@ -1,21 +1,15 @@
-package com.devansh.repo.event;
+package com.devansh.indexing.event;
 
 import java.util.UUID;
 
 public class RepositoryImportedEvent {
 
     private UUID repositoryId;
-
     private UUID userId;
-
     private String workspaceId;
-
     private String repositoryUrl;
-
     private String owner;
-
     private String repositoryName;
-
     private String defaultBranch;
 
     public RepositoryImportedEvent() {
@@ -28,8 +22,7 @@ public class RepositoryImportedEvent {
             String repositoryUrl,
             String owner,
             String repositoryName,
-            String defaultBranch
-    ) {
+            String defaultBranch) {
 
         this.repositoryId = repositoryId;
         this.userId = userId;

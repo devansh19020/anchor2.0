@@ -1,32 +1,47 @@
 package com.devansh.repo.dto;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class RepositoryResponse {
 
-    private UUID repositoryId;
+    private UUID id;
     private UUID userId;
+    private UUID workspaceId;
+
     private String repositoryUrl;
     private String owner;
     private String repositoryName;
     private String description;
     private String defaultBranch;
     private String language;
+
     private boolean privateRepository;
 
+    private String indexingStatus;
+
+    private LocalDateTime createdAt;
+
+    public RepositoryResponse() {
+    }
+
     public RepositoryResponse(
-            UUID repositoryId,
+            UUID id,
             UUID userId,
+            UUID workspaceId,
             String repositoryUrl,
             String owner,
             String repositoryName,
             String description,
             String defaultBranch,
             String language,
-            boolean privateRepository) {
-
-        this.repositoryId = repositoryId;
+            boolean privateRepository,
+            String indexingStatus,
+            LocalDateTime createdAt
+    ) {
+        this.id = id;
         this.userId = userId;
+        this.workspaceId = workspaceId;
         this.repositoryUrl = repositoryUrl;
         this.owner = owner;
         this.repositoryName = repositoryName;
@@ -34,14 +49,20 @@ public class RepositoryResponse {
         this.defaultBranch = defaultBranch;
         this.language = language;
         this.privateRepository = privateRepository;
+        this.indexingStatus = indexingStatus;
+        this.createdAt = createdAt;
     }
 
-    public UUID getRepositoryId() {
-        return repositoryId;
+    public UUID getId() {
+        return id;
     }
 
     public UUID getUserId() {
         return userId;
+    }
+
+    public UUID getWorkspaceId() {
+        return workspaceId;
     }
 
     public String getRepositoryUrl() {
@@ -70,5 +91,13 @@ public class RepositoryResponse {
 
     public boolean isPrivateRepository() {
         return privateRepository;
+    }
+
+    public String getIndexingStatus() {
+        return indexingStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

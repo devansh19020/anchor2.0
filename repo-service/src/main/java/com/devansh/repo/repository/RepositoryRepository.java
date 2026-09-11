@@ -1,6 +1,7 @@
 package com.devansh.repo.repository;
 
-import com.devansh.repo.entity.Repository;
+import com.devansh.repo.model.Repository;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

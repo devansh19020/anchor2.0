@@ -9,7 +9,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.devansh.indexing.exception.WorkspaceCreationException;
-import com.devansh.indexing.model.Workspace;
 import com.devansh.indexing.properties.WorkspaceProperties;
 
 @Component

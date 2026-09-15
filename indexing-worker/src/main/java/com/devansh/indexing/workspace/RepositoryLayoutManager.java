@@ -1,12 +1,10 @@
-package com.devansh.indexing.repository;
+package com.devansh.indexing.workspace;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
-
-import com.devansh.indexing.model.Workspace;
 
 @Component
 public class RepositoryLayoutManager {

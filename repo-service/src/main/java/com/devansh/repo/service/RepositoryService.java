@@ -1,5 +1,10 @@
 package com.devansh.repo.service;
 
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
 import com.devansh.repo.dto.GithubRepositoryResponse;
 import com.devansh.repo.dto.RepositoryImportRequest;
 import com.devansh.repo.dto.RepositoryResponse;
@@ -10,11 +15,6 @@ import com.devansh.repo.github.GithubUrlValidator.GithubRepositoryInfo;
 import com.devansh.repo.model.Repository;
 import com.devansh.repo.producer.RepositoryEventProducer;
 import com.devansh.repo.repository.RepositoryRepository;
-
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class RepositoryService {

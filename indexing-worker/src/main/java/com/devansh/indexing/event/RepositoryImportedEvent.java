@@ -22,8 +22,8 @@ public class RepositoryImportedEvent {
             String repositoryUrl,
             String owner,
             String repositoryName,
-            String defaultBranch) {
-
+            String defaultBranch
+    ) {
         this.repositoryId = repositoryId;
         this.userId = userId;
         this.workspaceId = workspaceId;

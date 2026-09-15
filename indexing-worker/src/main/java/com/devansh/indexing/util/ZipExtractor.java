@@ -9,7 +9,7 @@ import java.util.zip.ZipInputStream;
 
 import org.springframework.stereotype.Component;
 
-import com.devansh.indexing.model.Workspace;
+import com.devansh.indexing.workspace.Workspace;
 
 @Component
 public class ZipExtractor {

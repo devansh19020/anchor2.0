@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.devansh.indexing.model.Language;
 import com.devansh.indexing.model.SourceDocument;
-import com.devansh.indexing.model.SourceFile;
+import com.devansh.indexing.service.*;.model.SourceFile;
 
 @Component
 public class DefaultCodeParser implements CodeParser {

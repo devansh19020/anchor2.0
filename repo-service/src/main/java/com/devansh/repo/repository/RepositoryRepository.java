@@ -1,11 +1,11 @@
 package com.devansh.repo.repository;
 
-import com.devansh.repo.model.Repository;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.UUID;
+import com.devansh.repo.model.Repository;
 
 public interface RepositoryRepository
         extends JpaRepository<Repository, UUID> {
@@ -16,4 +16,6 @@ public interface RepositoryRepository
             UUID userId,
             String repositoryUrl
     );
+
+    
 }

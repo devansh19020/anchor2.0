@@ -1,4 +1,4 @@
-package com.devansh.anchor.parser;
+package com.devansh.indexing.parser;
 
 import org.springframework.stereotype.Component;
 

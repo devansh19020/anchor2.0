@@ -1,13 +1,15 @@
 package com.devansh.indexing.service;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.redis.core.index.IndexDefinition.IndexingContext;
 import org.springframework.stereotype.Service;
 
 import com.devansh.indexing.event.RepositoryImportedEvent;
 import com.devansh.indexing.github.GithubDownloader;
+import com.devansh.indexing.model.SourceDocument;
+import com.devansh.indexing.parser.RepositoryParserService;
 import com.devansh.indexing.util.ZipExtractor;
 import com.devansh.indexing.workspace.RepositoryLayoutManager;
 import com.devansh.indexing.workspace.Workspace;
@@ -22,19 +24,22 @@ public class RepositoryIndexingService {
     private final ZipExtractor zipExtractor;
     private final RepositoryLayoutManager repositoryLayoutManager;
     private final WorkspaceCleaner workspaceCleaner;
+    private final RepositoryParserService repositoryParserService;
 
     public RepositoryIndexingService(
             WorkspaceManager workspaceManager,
             GithubDownloader githubDownloader,
             ZipExtractor zipExtractor,
             RepositoryLayoutManager repositoryLayoutManager,
-            WorkspaceCleaner workspaceCleaner
+            WorkspaceCleaner workspaceCleaner,
+            RepositoryParserService repositoryParserService
     ) {
         this.workspaceManager = workspaceManager;
         this.githubDownloader = githubDownloader;
         this.zipExtractor = zipExtractor;
         this.repositoryLayoutManager = repositoryLayoutManager;
         this.workspaceCleaner = workspaceCleaner;
+        this.repositoryParserService = repositoryParserService;
     }
 
     public void indexRepository(
@@ -85,10 +90,18 @@ public class RepositoryIndexingService {
 
         System.out.println("Repository prepared successfully.");
 
-        IndexingContext context = repositoryParserService.parseRepository(workspace);
+        List<SourceDocument> documents =
+        repositoryParserService.parseRepository(workspace);
 
         System.out.println(
                 "Repository parsed successfully. Documents: "
-                + context.getDocuments().size());
+                        + documents.size()
+        );
+
+        documents.forEach(document ->
+                System.out.println(
+                        document.getSourceFile().getRelativePath()
+                )
+        );
         }
 }

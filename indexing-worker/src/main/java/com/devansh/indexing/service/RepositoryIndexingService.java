@@ -6,11 +6,15 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.devansh.indexing.chunking.ChunkingService;
+import com.devansh.indexing.embedding.EmbeddingService;
 import com.devansh.indexing.event.RepositoryImportedEvent;
 import com.devansh.indexing.github.GithubDownloader;
+import com.devansh.indexing.model.IndexingContext;
 import com.devansh.indexing.model.SourceDocument;
 import com.devansh.indexing.parser.RepositoryParserService;
 import com.devansh.indexing.util.ZipExtractor;
+import com.devansh.indexing.vectorstore.VectorStore;
 import com.devansh.indexing.workspace.RepositoryLayoutManager;
 import com.devansh.indexing.workspace.Workspace;
 import com.devansh.indexing.workspace.WorkspaceCleaner;
@@ -25,6 +29,9 @@ public class RepositoryIndexingService {
     private final RepositoryLayoutManager repositoryLayoutManager;
     private final WorkspaceCleaner workspaceCleaner;
     private final RepositoryParserService repositoryParserService;
+    private final ChunkingService chunkingService;
+    private final EmbeddingService embeddingService;
+    private final VectorStore vectorStore;
 
     public RepositoryIndexingService(
             WorkspaceManager workspaceManager,
@@ -32,7 +39,10 @@ public class RepositoryIndexingService {
             ZipExtractor zipExtractor,
             RepositoryLayoutManager repositoryLayoutManager,
             WorkspaceCleaner workspaceCleaner,
-            RepositoryParserService repositoryParserService
+            RepositoryParserService repositoryParserService,
+            ChunkingService chunkingService,
+            EmbeddingService embeddingService,
+            VectorStore vectorStore
     ) {
         this.workspaceManager = workspaceManager;
         this.githubDownloader = githubDownloader;
@@ -40,6 +50,9 @@ public class RepositoryIndexingService {
         this.repositoryLayoutManager = repositoryLayoutManager;
         this.workspaceCleaner = workspaceCleaner;
         this.repositoryParserService = repositoryParserService;
+        this.chunkingService = chunkingService;
+        this.embeddingService = embeddingService;
+        this.vectorStore = vectorStore;
     }
 
     public void indexRepository(
@@ -98,10 +111,28 @@ public class RepositoryIndexingService {
                         + documents.size()
         );
 
-        documents.forEach(document ->
-                System.out.println(
-                        document.getSourceFile().getRelativePath()
-                )
+        IndexingContext context = IndexingContext.builder()
+                .workspace(workspace)
+                .documents(documents)
+                .build();
+
+        context = chunkingService.chunkDocuments(context);
+
+        System.out.println(
+                "Chunks created: " + context.getChunks().size()
         );
-        }
+
+        context = embeddingService.generateEmbeddings(context);
+
+        System.out.println("Embedding generation completed.");
+
+        vectorStore.store(context.getChunks());
+
+        System.out.println("Chunks stored in ChromaDB.");
+
+        System.out.println(
+                "Total vectors in collection: " + vectorStore.count()
+        );
+    }
+
 }

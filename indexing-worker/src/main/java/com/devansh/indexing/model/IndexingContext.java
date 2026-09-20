@@ -11,9 +11,11 @@ public class IndexingContext {
     private List<SourceDocument> documents = new ArrayList<>();
     private List<CodeChunk> chunks = new ArrayList<>();
 
+    // Default constructor
     public IndexingContext() {
     }
 
+    // Private constructor for Builder
     private IndexingContext(Builder builder) {
         this.workspace = builder.workspace;
         this.documents = builder.documents;
@@ -57,6 +59,7 @@ public class IndexingContext {
     public static class Builder {
         private Workspace workspace;
         
+        // Initializing here replicates the @Builder.Default behavior
         private List<SourceDocument> documents = new ArrayList<>();
         private List<CodeChunk> chunks = new ArrayList<>();
 

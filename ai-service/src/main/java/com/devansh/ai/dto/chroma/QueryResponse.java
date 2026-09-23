@@ -1,4 +1,4 @@
-package com.devansh.indexing.dto.chroma;
+package com.devansh.ai.dto.chroma;
 
 import java.util.List;
 import java.util.Map;

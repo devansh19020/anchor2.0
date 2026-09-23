@@ -1,13 +1,13 @@
-package com.devansh.indexing.vectorstore;
+package com.devansh.ai.vectorstore;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.devansh.indexing.dto.chroma.AddEmbeddingsRequest;
-import com.devansh.indexing.dto.chroma.CreateCollectionRequest;
-import com.devansh.indexing.dto.chroma.CreateCollectionResponse;
-import com.devansh.indexing.properties.ChromaProperties;
-import com.devansh.indexing.util.ChromaConstants;
+import com.devansh.ai.dto.chroma.CreateCollectionResponse;
+import com.devansh.ai.dto.chroma.QueryRequest;
+import com.devansh.ai.dto.chroma.QueryResponse;
+import com.devansh.ai.properties.ChromaProperties;
+import com.devansh.ai.util.ChromaConstants;
 
 @Component
 public class ChromaClient {
@@ -35,39 +35,16 @@ public class ChromaClient {
 
     }
 
-    public CreateCollectionResponse createCollection(String collectionName) {
 
-        CreateCollectionRequest request =
-                new CreateCollectionRequest(
-                        collectionName,
-                        true
-                );
+        public QueryResponse query(
+                String collectionId,
+                QueryRequest request
+        ) {
 
         return restClient.post()
 
                 .uri(
-                        "/api/v2/tenants/{tenant}/databases/{database}/collections",
-                        ChromaConstants.DEFAULT_TENANT,
-                        ChromaConstants.DEFAULT_DATABASE
-                )
-
-                .body(request)
-
-                .retrieve()
-
-                .body(CreateCollectionResponse.class);
-
-    }
-
-        public void add(
-                String collectionId,
-                AddEmbeddingsRequest request
-        ) {
-
-        restClient.post()
-
-                .uri(
-                        "/api/v2/tenants/{tenant}/databases/{database}/collections/{collectionId}/add",
+                        "/api/v2/tenants/{tenant}/databases/{database}/collections/{collectionId}/query",
                         ChromaConstants.DEFAULT_TENANT,
                         ChromaConstants.DEFAULT_DATABASE,
                         collectionId
@@ -77,25 +54,22 @@ public class ChromaClient {
 
                 .retrieve()
 
-                .toBodilessEntity();
+                .body(QueryResponse.class);
 
         }
 
-        public Integer count(String collectionId) {
-
+        public CreateCollectionResponse getCollection(
+                String collectionName
+        ) {
         return restClient.get()
-
                 .uri(
-                        "/api/v2/tenants/{tenant}/databases/{database}/collections/{collectionId}/count",
+                        "/api/v2/tenants/{tenant}/databases/{database}/collections/{collectionName}",
                         ChromaConstants.DEFAULT_TENANT,
                         ChromaConstants.DEFAULT_DATABASE,
-                        collectionId
+                        collectionName
                 )
-
                 .retrieve()
-
-                .body(Integer.class);
-
+                .body(CreateCollectionResponse.class);
         }
 
         public void deleteCollection(String collectionName) {

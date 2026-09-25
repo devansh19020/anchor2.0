@@ -193,4 +193,14 @@ public class RepositoryService {
                 ))
                 .toList();
         }
+
+        public boolean existsByWorkspaceIdAndUserId(
+                UUID workspaceId,
+                UUID userId) {
+                        return repositoryRepository
+                                .existsByWorkspaceIdAndUserId(
+                                        workspaceId,
+                                        userId
+                                );
+                }
 }

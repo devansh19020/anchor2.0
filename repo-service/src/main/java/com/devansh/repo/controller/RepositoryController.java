@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devansh.repo.dto.RepositoryImportRequest;
+import com.devansh.repo.dto.RepositoryIndexingStatusResponse;
 import com.devansh.repo.dto.RepositoryResponse;
 import com.devansh.repo.service.RepositoryService;
+import com.devansh.repo.service.RepositoryStatusService;
 
 import jakarta.validation.Valid;
 
@@ -23,10 +26,13 @@ import jakarta.validation.Valid;
 public class RepositoryController {
 
     private final RepositoryService repositoryService;
+    private final RepositoryStatusService repositoryStatusService;
 
     public RepositoryController(
-            RepositoryService repositoryService) {
+            RepositoryService repositoryService,
+            RepositoryStatusService repositoryStatusService) {
         this.repositoryService = repositoryService;
+        this.repositoryStatusService = repositoryStatusService;
     }
 
     @PostMapping("/import")
@@ -55,4 +61,30 @@ public class RepositoryController {
                 )
         );
     }
+    
+    @GetMapping("/{repositoryId}/status")
+    public ResponseEntity<RepositoryIndexingStatusResponse> getStatus(
+                @PathVariable UUID repositoryId,
+                @RequestHeader("X-User-Id") String userId) {
+
+        RepositoryIndexingStatusResponse response =
+                repositoryStatusService.getStatus(
+                        repositoryId,
+                        UUID.fromString(userId)
+                );
+
+        return ResponseEntity.ok(response);
+        }
+
+        @GetMapping("/workspaces/{workspaceId}/access")
+        public ResponseEntity<Boolean> checkWorkspaceAccess(
+                @PathVariable UUID workspaceId,
+                @RequestHeader("X-User-Id") UUID userId) {
+
+        boolean ownsWorkspace =
+                repositoryService.existsByWorkspaceIdAndUserId(
+                        workspaceId, userId);
+
+        return ResponseEntity.ok(ownsWorkspace);
+        }
 }

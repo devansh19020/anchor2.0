@@ -1,5 +1,7 @@
 package com.devansh.repo.exception;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,4 +39,13 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Internal server error");
     }
+
+    @ExceptionHandler(RepositoryAccessDeniedException.class)
+    public ResponseEntity<Map<String, String>> handleAccessDenied(
+                RepositoryAccessDeniedException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", ex.getMessage()));
+        }
 }

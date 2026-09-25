@@ -17,5 +17,6 @@ public interface RepositoryRepository
             String repositoryUrl
     );
 
+    boolean existsByWorkspaceIdAndUserId(UUID workspaceId, UUID userId);
     
 }
